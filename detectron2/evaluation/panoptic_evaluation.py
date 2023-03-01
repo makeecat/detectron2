@@ -123,7 +123,9 @@ class COCOPanopticEvaluator(DatasetEvaluator):
         gt_json = PathManager.get_local_path(self._metadata.panoptic_json)
         gt_folder = PathManager.get_local_path(self._metadata.panoptic_root)
 
-        with tempfile.TemporaryDirectory(prefix="panoptic_eval") as pred_dir:
+        os.makedirs(os.path.join(self._output_dir,"panoptic_pred"),exist_ok = True)
+        pred_dir = os.path.join(self._output_dir,"panoptic_pred")
+        with tempfile.TemporaryDirectory(prefix="panoptic_eval") as pred_dir_temp:
             logger.info("Writing all panoptic predictions to {} ...".format(pred_dir))
             for p in self._predictions:
                 with open(os.path.join(pred_dir, p["file_name"]), "wb") as f:
